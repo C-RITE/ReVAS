@@ -31,12 +31,14 @@ switch module
         default.enableVerbosity = 'frame';
         default.badFrames = false;
         default.axesHandles = [];
+        default.saveTif = true;
         
         % validation functions 
         validate.overwrite = @islogical;
         validate.enableVerbosity = @(x) CategoryOrLogicalOrNumeric(x,{'none','video','frame'});
         validate.badFrames = @(x) all(islogical(x));
         validate.axesHandles = @(x) isempty(x) | all(ishandle(x));
+        validate.saveTif = @islogical;
         
         % list which modules can preceed or succeed this one
         before = {'none','trimvideo','stripanalysis'};
