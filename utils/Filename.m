@@ -36,6 +36,10 @@ switch lower(moduleToApply)
         keyword = 'randomframe';
         module = 'dummymodule';
         outputFilePath = fullfile(inputDir, [inputFileName '_' keyword '.mat']);
+    case 'randomframetif'
+        keyword = 'randomframe';
+        module = 'dummymodule';
+        outputFilePath = fullfile(inputDir, [inputFileName '_' keyword '.tif']);
     case {'trim','trimvideo'}
         keyword = 'trim';
         module = 'trimvideo';

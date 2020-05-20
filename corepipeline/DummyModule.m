@@ -113,6 +113,7 @@ end
 if writeResult
     outputVideoPath = Filename(inputVideo, 'dummy');
     matFilePath = Filename(inputVideo, 'randomframe');
+    tifFilePath = Filename(inputVideo,'randomframetif');
     params.outputVideoPath = outputVideoPath;
     params.matFilePath = matFilePath;
     
@@ -146,6 +147,7 @@ end
 if writeResult
     writer = VideoWriter(outputVideoPath, 'Grayscale AVI');
     open(writer);
+    
 
     % Determine dimensions of video.
     reader = VideoReader(inputVideo);
@@ -230,7 +232,7 @@ if writeResult
     outputVideo = outputVideoPath;
     
     close(writer);
-    
+    imwrite(randomFrame,tifFilePath);
     % if aborted midway through video, delete the partial video.
     if params.abort.Value
         delete(outputVideoPath)
