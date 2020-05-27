@@ -5,6 +5,7 @@ function PipelineTool(varargin)
 %   ReVAS/corepipeline folder.
 %
 % Mehmet N. Agaoglu 1/19/2020 
+% editted Ethan Bensinger 5/27/2020 pipeline position up and down buttons
 
 % first argument is the source
 src = varargin{1};
@@ -150,6 +151,26 @@ removeModule = uicontrol(fig,...
     'string','<-',...
     'callback',{@RemoveCallback}); %#ok<NASGU>
 
+% move module up in pipeline button
+d = min(guiSize(1:2))*0.05;
+upPos = [guiSize(1:2)/2 + d*6.5*[0.2 1] d*[1 1]];
+upModule = uicontrol(fig,...
+    'style','pushbutton',...
+    'units','pix',...
+    'position',upPos,...
+    'fontsize',fontSize+2,...
+    'string','^',...
+    'callback',{@upposCallback}); %#ok<NASGU>
+
+% move module down in pipeline button
+downPos = [upPos(1) upPos(2)-upPos(4)-10 upPos(3:4)];
+downModule = uicontrol(fig,...
+    'style','pushbutton',...
+    'units','pix',...
+    'position',downPos,...
+    'fontsize',fontSize,...
+    'string','v',...
+    'callback',{@downposCallback}); %#ok<NASGU>
 % also before we finish up, add the OK and Cancel buttons.
 
 % OK button
@@ -185,7 +206,7 @@ uiwait(fig);
     function AddCallback(varargin)
         % move selected modules to pipeline, add to the bottom of the list
         newModule = lbAvailable.String(lbAvailable.Value);
-        lbPipe.String = [lbPipe.String; newModule];
+        lbPipe.String = [newModule; lbPipe.String];
         
         % make the last item in the pipeline as the selected item
         lbPipe.Value = length(lbPipe.String);
@@ -210,6 +231,28 @@ uiwait(fig);
         
         % make the last item in the pipeline as the selected item
         lbPipe.Value = length(lbPipe.String);
+        
+        isPipeChanged = true;
+    end
+
+    function upposCallback(varargin)
+        % move selectedModule up in pipeline order
+        selectedModule = lbPipe.String(lbPipe.Value);
+        movedModule= lbPipe.String(lbPipe.Value-1);
+        lbPipe.String{lbPipe.Value} = movedModule{1};
+        lbPipe.String{lbPipe.Value-1}=selectedModule{1};
+        lbPipe.Value=lbPipe.Value-1;
+        
+        isPipeChanged = true;
+    end
+
+    function downposCallback(varargin)
+        % move selectedModule up in pipeline order
+        selectedModule = lbPipe.String(lbPipe.Value);
+        movedModule= lbPipe.String(lbPipe.Value+1);
+        lbPipe.String{lbPipe.Value} = movedModule{1};
+        lbPipe.String{lbPipe.Value+1}=selectedModule{1};
+        lbPipe.Value=lbPipe.Value+1;
         
         isPipeChanged = true;
     end
